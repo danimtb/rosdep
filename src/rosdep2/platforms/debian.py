@@ -47,6 +47,7 @@ from .pip import PIP_INSTALLER
 from .gem import GEM_INSTALLER
 from .npm import NPM_INSTALLER
 from .source import SOURCE_INSTALLER
+from .conan import CONAN_INSTALLER
 from ..installers import PackageManagerInstaller
 from ..shell_utils import read_stdout
 
@@ -149,6 +150,7 @@ def register_ubuntu(context):
     context.add_os_installer_key(OS_UBUNTU, GEM_INSTALLER)
     context.add_os_installer_key(OS_UBUNTU, NPM_INSTALLER)
     context.add_os_installer_key(OS_UBUNTU, SOURCE_INSTALLER)
+    context.add_os_installer_key(OS_UBUNTU, CONAN_INSTALLER)
     context.set_default_os_installer_key(OS_UBUNTU, lambda self: APT_INSTALLER)
     context.set_os_version_type(OS_UBUNTU, OsDetect.get_codename)
 
