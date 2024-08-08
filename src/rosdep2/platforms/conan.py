@@ -65,7 +65,7 @@ def conan_detect(pkgs):
 
     ret_list = []
 
-    lockfile_path = os.path.join("conan", CONAN_LOCKFILE_NAME)
+    lockfile_path = os.path.join("install", CONAN_LOCKFILE_NAME)
     if not os.path.exists(lockfile_path):
         return ret_list
 
@@ -101,9 +101,14 @@ class ConanInstaller(PackageManagerInstaller):
         if not packages:
             return []
         else:
-            cmd = ["conan", "install"]
+            conan_install = ["conan", "install"]
+            conan_config_install = ['conan', 'config', 'install', 'https://github.com/danimtb/ros2_conan_config.git']
+            if quiet:
+                conan_install.append("-vquiet")
+                conan_config_install.append("-vquiet")
+            subprocess.Popen(conan_config_install, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
             require_args = [f"--require {package}" for package in packages]
             require_str = " ".join(require_args)
             requires = require_str.split(" ")
-            cmd = ["conan", "install"] + requires + ["--output-folder", "conan", "--generator", "CMakeToolchain", "--generator", "CMakeDeps", "--lockfile-out", f"conan/{CONAN_LOCKFILE_NAME}"]
+            cmd = conan_install + requires + ["--generator", "Ament", "--build", "missing", "--lockfile-out", f"install/{CONAN_LOCKFILE_NAME}"]
             return [self.elevate_priv(cmd)]
