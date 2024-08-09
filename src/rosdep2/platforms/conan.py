@@ -97,6 +97,7 @@ class ConanInstaller(PackageManagerInstaller):
     def get_install_command(self, resolved, interactive=True, reinstall=False, quiet=False):
         if not is_conan_installed():
             raise InstallFailed((CONAN_INSTALLER, 'conan is not installed'))
+        print("RESOLVED: ", resolved)
         packages = self.get_packages_to_install(resolved, reinstall=reinstall)
         if not packages:
             return []
@@ -106,7 +107,7 @@ class ConanInstaller(PackageManagerInstaller):
             if quiet:
                 conan_install.append("-vquiet")
                 conan_config_install.append("-vquiet")
-            subprocess.Popen(conan_config_install, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            subprocess.check_output(conan_config_install)
             require_args = [f"--require {package}" for package in packages]
             require_str = " ".join(require_args)
             requires = require_str.split(" ")
