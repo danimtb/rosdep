@@ -97,12 +97,12 @@ class ConanInstaller(PackageManagerInstaller):
     def get_install_command(self, resolved, interactive=True, reinstall=False, quiet=False):
         if not is_conan_installed():
             raise InstallFailed((CONAN_INSTALLER, 'conan is not installed'))
-        print("RESOLVED: ", resolved)
         packages = self.get_packages_to_install(resolved, reinstall=reinstall)
         if not packages:
             return []
         else:
             conan_install = ["conan", "install"]
+            # FIXME: Update config repo url to install the ament generator or integrate it inside the conan client
             conan_config_install = ['conan', 'config', 'install', 'https://github.com/danimtb/ros2_conan_config.git']
             if quiet:
                 conan_install.append("-vquiet")
