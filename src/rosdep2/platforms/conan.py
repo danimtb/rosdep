@@ -102,7 +102,7 @@ class ConanInstaller(PackageManagerInstaller):
         if not packages:
             return []
 
-        conan_config_install = ['conan', 'config', 'install', 'https://github.com/conan-io/conan-extensions.git']
+        conan_config_install = ['conan', 'config', 'install', 'https://github.com/conan-io/conan-extensions.git', '-a', '"--branch ament/folders"']
         conan_install = ["conan", "install"]
         if quiet:
             conan_install.append("-vquiet")
