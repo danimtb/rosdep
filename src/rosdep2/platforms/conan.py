@@ -107,7 +107,7 @@ class ConanInstaller(PackageManagerInstaller):
         if quiet:
             conan_install.append("-vquiet")
             conan_config_install.append("-vquiet")
-        if os.path.exist(CONAN_PROFILE_NAME):
+        if os.path.exists(CONAN_PROFILE_NAME):
             conan_install.extend(["--profile", CONAN_PROFILE_NAME])
         subprocess.check_output(conan_config_install)
         require_args = [f"--require {package}" for package in packages]
