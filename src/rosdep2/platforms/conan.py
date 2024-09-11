@@ -40,6 +40,7 @@ from ..shell_utils import read_stdout
 # conan package manager key
 CONAN_INSTALLER = 'conan'
 CONAN_LOCKFILE_NAME = 'rosdep_conan.lock'
+CONAN_PROFILE_NAME = 'conan_profile'
 
 
 def register_installers(context):
@@ -101,15 +102,17 @@ class ConanInstaller(PackageManagerInstaller):
         packages = self.get_packages_to_install(resolved, reinstall=reinstall)
         if not packages:
             return []
-        else:
-            conan_install = ["conan", "install"]
-            conan_config_install = ['conan', 'config', 'install', 'https://github.com/danimtb/ros2_conan_config.git']
-            if quiet:
-                conan_install.append("-vquiet")
-                conan_config_install.append("-vquiet")
-            subprocess.check_output(conan_config_install)
-            require_args = [f"--require {package}" for package in packages]
-            require_str = " ".join(require_args)
-            requires = require_str.split(" ")
-            cmd = conan_install + requires + ["--generator", "Ament", "--build", "missing", "--lockfile-out", f"install/{CONAN_LOCKFILE_NAME}"]
-            return [self.elevate_priv(cmd)]
+
+        conan_config_install = ['conan', 'config', 'install', 'https://github.com/conan-io/conan-extensions.git']
+        conan_install = ["conan", "install"]
+        if quiet:
+            conan_install.append("-vquiet")
+            conan_config_install.append("-vquiet")
+        if os.path.exist(CONAN_PROFILE_NAME):
+            conan_install.extend(["--profile", CONAN_PROFILE_NAME])
+        subprocess.check_output(conan_config_install)
+        require_args = [f"--require {package}" for package in packages]
+        require_str = " ".join(require_args)
+        requires = require_str.split(" ")
+        cmd = conan_install + requires + ["--generator", "Ament", "--build", "missing", "--output-folder", "install", "--lockfile-out", f"install/{CONAN_LOCKFILE_NAME}"]
+        return [self.elevate_priv(cmd)]
