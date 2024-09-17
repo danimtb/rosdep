@@ -1,0 +1,15 @@
+{
+    "version": "0.5",
+    "requires": [
+        "zlib/1.3.1#f52e03ae3d251dec704634230cd806a2%1708593606.497",
+        "libbacktrace/cci.20210118#ec1aa63bbc10145c6a299e68e711670c%1676205469.545",
+        "bzip2/1.0.8#457c272f7da34cb9c67456dd217d36c4%1703591832.799",
+        "box2d/2.3.1#7bcbc702aac3f4292be2c9a4abad7195%1661167619.033",
+        "boost/1.84.0#85fab16ba3b744074ca9733d2ed5fe5a%1720080619.2"
+    ],
+    "build_requires": [
+        "b2/5.2.1#91bc73931a0acb655947a81569ed8b80%1718416612.241"
+    ],
+    "python_requires": [],
+    "config_requires": []
+}

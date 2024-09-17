@@ -35,7 +35,6 @@ import subprocess
 
 from ..core import InstallFailed
 from ..installers import PackageManagerInstaller
-from ..shell_utils import read_stdout
 
 # conan package manager key
 CONAN_INSTALLER = 'conan'
@@ -55,6 +54,10 @@ def is_conan_installed():
         return False
 
 
+def get_lockfile_path():
+    return os.path.join("install", CONAN_LOCKFILE_NAME)
+
+
 def conan_detect(pkgs):
     """
     Given a list of packages to install, return the list of packages already installed.
@@ -66,12 +69,10 @@ def conan_detect(pkgs):
 
     ret_list = []
 
-    lockfile_path = os.path.join("install", CONAN_LOCKFILE_NAME)
-    if not os.path.exists(lockfile_path):
+    if not os.path.exists(get_lockfile_path()):
         return ret_list
 
-    data = {}
-    with open(lockfile_path) as f:
+    with open(get_lockfile_path()) as f:
         data = json.load(f)
 
     installed_pkgs = [r.split("#")[0] for r in data["requires"]]
