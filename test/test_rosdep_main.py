@@ -37,11 +37,7 @@ import rospkg
 import rospkg.os_detect
 
 import unittest
-
-try:
-    from unittest.mock import DEFAULT, patch
-except ImportError:
-    from mock import DEFAULT, patch
+from unittest.mock import DEFAULT, patch
 
 from rosdep2 import main
 from rosdep2.ament_packages import AMENT_PREFIX_PATH_ENV_VAR
@@ -172,9 +168,9 @@ class TestRosdepMain(unittest.TestCase):
                 result = ''
             elif cmd[0] == 'dpkg-query':
                 if cmd[-1] == 'python3-dev':
-                    result = '\'python3-dev install ok installed\n\''
+                    result = "'python3-dev install ok installed\n'"
                 else:
-                    result = '\n'.join(["dpkg-query: no packages found matching %s" % f for f in cmd[3:]])
+                    result = '\n'.join(['dpkg-query: no packages found matching %s' % f for f in cmd[3:]])
 
             if capture_stderr:
                 return result, ''

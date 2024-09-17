@@ -31,8 +31,6 @@
 Command-line interface to rosdep library
 """
 
-from __future__ import print_function
-
 import errno
 import os
 import sys
@@ -65,9 +63,9 @@ from .installers import RosdepInstaller
 from .lookup import RosdepLookup, ResolutionError, prune_catkin_packages
 from .meta import MetaDatabase
 from .rospkg_loader import DEFAULT_VIEW_KEY
-from .sources_list import update_sources_list, get_sources_cache_dir,\
-    download_default_sources_list, SourcesListLoader, CACHE_INDEX,\
-    get_sources_list_dir, get_default_sources_list_file,\
+from .sources_list import update_sources_list, get_sources_cache_dir, \
+    download_default_sources_list, SourcesListLoader, CACHE_INDEX, \
+    get_sources_list_dir, get_default_sources_list_file, \
     DEFAULT_SOURCES_LIST_URL
 from .rosdistrohelper import PreRep137Warning
 
@@ -380,7 +378,7 @@ def _rosdep_main(args):
                            'If specified end-of-life distros are being '
                            'fetched too.')
     parser.add_option('-t', '--dependency-types', dest='dependency_types',
-                      type="choice", choices=list(VALID_DEPENDENCY_TYPES),
+                      type='choice', choices=list(VALID_DEPENDENCY_TYPES),
                       default=[], action='append',
                       help='Dependency types to install, can be given multiple times. '
                            'Choose from {}. Default: all except doc.'.format(VALID_DEPENDENCY_TYPES))
