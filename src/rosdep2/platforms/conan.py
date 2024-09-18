@@ -97,24 +97,26 @@ class ConanInstaller(PackageManagerInstaller):
         conan_version = conan_version_data["version"]
         return ['conan {}'.format(conan_version)]
 
-    def _install_ament_generator(self):
-        conan_config_install = ['conan', 'config', 'install', 'https://github.com/conan-io/conan-extensions.git']
+    def _install_ament_generator(self, quiet=False):
+        conan_config_install = ['conan', 'config', 'install']
+        if quiet:
+            conan_config_install.append('-vquiet')
+        conan_config_install.append('https://github.com/conan-io/conan-extensions.git')
         subprocess.check_output(conan_config_install)
 
     def get_install_command(self, resolved, interactive=True, reinstall=False, quiet=False):
         if not is_conan_installed():
             raise InstallFailed((CONAN_INSTALLER, 'conan is not installed'))
 
-        self._install_ament_generator()
-
         packages = self.get_packages_to_install(resolved, reinstall=reinstall)
         if not packages:
             return []
 
+        self._install_ament_generator(quiet)
+
         conan_install = ["conan", "install"]
         if quiet:
             conan_install.append("-vquiet")
-            conan_config_install.append("-vquiet")
         if os.path.exists(CONAN_PROFILE_NAME):
             conan_install.extend(["--profile", CONAN_PROFILE_NAME])
         require_args = [f"--require {package}" for package in packages]
