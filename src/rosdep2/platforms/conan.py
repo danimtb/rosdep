@@ -92,8 +92,9 @@ class ConanInstaller(PackageManagerInstaller):
         super(ConanInstaller, self).__init__(conan_detect, supports_depends=True)
 
     def get_version_strings(self):
-        conan_version_str = subprocess.check_output(['conan', '--version']).strip().decode()
-        conan_version = conan_version_str.replace("Conan version ", "")
+        output = subprocess.check_output(['conan', 'version', '--format', 'json']).strip().decode()
+        conan_version_data = json.loads(output)
+        conan_version = conan_version_data["version"]
         return ['conan {}'.format(conan_version)]
 
     def _install_ament_generator(self):
