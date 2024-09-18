@@ -1,6 +1,6 @@
 import os
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 
 def get_test_dir():
@@ -33,4 +33,36 @@ class TestConanDetect(unittest.TestCase):
         pkgs_to_install = ["this_is_not_installed", "this_isnt_installed_either"]
 
         result = conan_detect(pkgs_to_install)
+        self.assertEqual([], result)
+
+    @patch("rosdep2.platforms.conan.is_conan_installed")
+    @patch("rosdep2.platforms.conan.get_lockfile_path")
+    def test_conan_install_command(self, mock_get_lockfile_path, mock_is_conan_installed):
+        from rosdep2.platforms.conan import ConanInstaller, CONAN_LOCKFILE_NAME
+
+        conan_installer = ConanInstaller()
+        conan_installer._install_ament_generator = MagicMock()
+        mock_is_conan_installed.return_value = True
+        mock_get_lockfile_path.return_value = os.path.join(get_test_dir(), CONAN_LOCKFILE_NAME)
+
+        pkgs_to_install = ["one/1.0.0", "two/2.0.0"]
+
+        result = conan_installer.get_install_command(pkgs_to_install)[0]
+        result = " ".join(result)
+        self.assertEqual("conan install --require one/1.0.0 --require two/2.0.0 --generator Ament "
+                         "--build missing --output-folder install --lockfile-out install/rosdep_conan.lock", result)
+
+    @patch("rosdep2.platforms.conan.is_conan_installed")
+    @patch("rosdep2.platforms.conan.get_lockfile_path")
+    def test_conan_install_command_already_installed(self, mock_get_lockfile_path, mock_is_conan_installed):
+        from rosdep2.platforms.conan import ConanInstaller, CONAN_LOCKFILE_NAME
+
+        conan_installer = ConanInstaller()
+        conan_installer._install_ament_generator = MagicMock()
+        mock_is_conan_installed.return_value = True
+        mock_get_lockfile_path.return_value = os.path.join(get_test_dir(), CONAN_LOCKFILE_NAME)
+
+        pkgs_to_install = ["zlib/1.3.1", "bzip2/1.0.8"]
+
+        result = conan_installer.get_install_command(pkgs_to_install)
         self.assertEqual([], result)
