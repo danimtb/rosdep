@@ -122,5 +122,5 @@ class ConanInstaller(PackageManagerInstaller):
         require_args = [f"--require {package}" for package in packages]
         require_str = " ".join(require_args)
         requires = require_str.split(" ")
-        cmd = conan_install + requires + ["--generator", "Ament", "--build", "missing", "--output-folder", "install", "--lockfile-out", f"install/{CONAN_LOCKFILE_NAME}"]
+        cmd = conan_install + requires + ["--update", "--generator", "Ament", "--build", "missing", "--output-folder", "install", "--lockfile-out", f"install/{CONAN_LOCKFILE_NAME}"]
         return [cmd]
