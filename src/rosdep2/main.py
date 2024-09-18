@@ -793,7 +793,6 @@ def command_install(lookup, packages, options):
         else:
             return 1
     try:
-        print("INSTALL OPTIONS: ", install_options, uninstalled)
         installer.install(uninstalled, **install_options)
         if not options.simulate:
             print('#All required rosdeps installed successfully')
