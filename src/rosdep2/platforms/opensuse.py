@@ -31,6 +31,7 @@ import subprocess
 
 from rospkg.os_detect import OS_OPENSUSE
 
+from .conan import CONAN_INSTALLER
 from .pip import PIP_INSTALLER
 from .source import SOURCE_INSTALLER
 from ..installers import PackageManagerInstaller
@@ -47,6 +48,7 @@ def register_platforms(context):
     context.add_os_installer_key(OS_OPENSUSE, SOURCE_INSTALLER)
     context.add_os_installer_key(OS_OPENSUSE, PIP_INSTALLER)
     context.add_os_installer_key(OS_OPENSUSE, ZYPPER_INSTALLER)
+    context.add_os_installer_key(OS_OPENSUSE, CONAN_INSTALLER)
     context.set_default_os_installer_key(OS_OPENSUSE, lambda self: ZYPPER_INSTALLER)
 
 

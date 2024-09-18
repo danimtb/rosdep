@@ -30,6 +30,7 @@
 import subprocess
 import os
 
+from .conan import CONAN_INSTALLER
 from ..core import InstallFailed
 from .pip import PIP_INSTALLER
 from ..installers import PackageManagerInstaller
@@ -51,6 +52,7 @@ def register_platforms(context):
     context.add_os_installer_key(SLACKWARE_OS_NAME, PIP_INSTALLER)
     context.add_os_installer_key(SLACKWARE_OS_NAME, SOURCE_INSTALLER)
     context.add_os_installer_key(SLACKWARE_OS_NAME, SLACKPKG_INSTALLER)
+    context.add_os_installer_key(SLACKWARE_OS_NAME, CONAN_INSTALLER)
     context.set_default_os_installer_key(SLACKWARE_OS_NAME, lambda self: SBOTOOLS_INSTALLER)
 
 

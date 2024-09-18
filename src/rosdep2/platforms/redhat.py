@@ -39,6 +39,7 @@ from rospkg.os_detect import (
     OS_ROCKY
 )
 
+from .conan import CONAN_INSTALLER
 from .pip import PIP_INSTALLER
 from .source import SOURCE_INSTALLER
 from ..core import rd_debug
@@ -73,6 +74,7 @@ def register_fedora(context):
     context.add_os_installer_key(OS_FEDORA, DNF_INSTALLER)
     context.add_os_installer_key(OS_FEDORA, YUM_INSTALLER)
     context.add_os_installer_key(OS_FEDORA, SOURCE_INSTALLER)
+    context.add_os_installer_key(OS_FEDORA, CONAN_INSTALLER)
     context.set_default_os_installer_key(OS_FEDORA, lambda self: DNF_INSTALLER if self.get_version().isdigit() and int(self.get_version()) > 21 else YUM_INSTALLER)
     context.set_os_version_type(OS_FEDORA, lambda self: self.get_version() if self.get_version().isdigit() and int(self.get_version()) > 20 else self.get_codename())
 
@@ -82,6 +84,7 @@ def register_rhel(context):
     context.add_os_installer_key(OS_RHEL, DNF_INSTALLER)
     context.add_os_installer_key(OS_RHEL, YUM_INSTALLER)
     context.add_os_installer_key(OS_RHEL, SOURCE_INSTALLER)
+    context.add_os_installer_key(OS_RHEL, CONAN_INSTALLER)
     context.set_default_os_installer_key(OS_RHEL, lambda self: DNF_INSTALLER if self.get_version().split('.', 1)[0].isdigit() and int(self.get_version().split('.', 1)[0]) >= 8 else YUM_INSTALLER)
     context.set_os_version_type(OS_RHEL, lambda self: self.get_version().split('.', 1)[0])
 

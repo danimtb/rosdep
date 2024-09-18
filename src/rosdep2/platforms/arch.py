@@ -32,6 +32,7 @@ import sys
 
 from rospkg.os_detect import OS_ARCH, OS_MANJARO
 
+from .conan import CONAN_INSTALLER
 from ..installers import PackageManagerInstaller
 from .source import SOURCE_INSTALLER
 from .pip import PIP_INSTALLER
@@ -47,6 +48,7 @@ def register_platforms(context):
     context.add_os_installer_key(OS_ARCH, SOURCE_INSTALLER)
     context.add_os_installer_key(OS_ARCH, PACMAN_INSTALLER)
     context.add_os_installer_key(OS_ARCH, PIP_INSTALLER)
+    context.add_os_installer_key(OS_ARCH, CONAN_INSTALLER)
     context.set_default_os_installer_key(OS_ARCH, lambda self: PACMAN_INSTALLER)
 
     register_manjaro(context)

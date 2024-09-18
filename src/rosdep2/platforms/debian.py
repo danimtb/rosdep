@@ -77,6 +77,7 @@ def register_debian(context):
     context.add_os_installer_key(OS_DEBIAN, GEM_INSTALLER)
     context.add_os_installer_key(OS_DEBIAN, NPM_INSTALLER)
     context.add_os_installer_key(OS_DEBIAN, SOURCE_INSTALLER)
+    context.add_os_installer_key(OS_DEBIAN, CONAN_INSTALLER)
     context.set_default_os_installer_key(OS_DEBIAN, lambda self: APT_INSTALLER)
     context.set_os_version_type(OS_DEBIAN, OsDetect.get_codename)
 

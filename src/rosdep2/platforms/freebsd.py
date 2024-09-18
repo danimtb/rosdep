@@ -31,6 +31,7 @@
 
 from rospkg.os_detect import OS_FREEBSD
 
+from .conan import CONAN_INSTALLER
 from .pip import PIP_INSTALLER
 from ..installers import PackageManagerInstaller
 from ..shell_utils import read_stdout
@@ -45,6 +46,7 @@ def register_installers(context):
 def register_platforms(context):
     context.add_os_installer_key(OS_FREEBSD, PKG_INSTALLER)
     context.add_os_installer_key(OS_FREEBSD, PIP_INSTALLER)
+    context.add_os_installer_key(OS_FREEBSD, CONAN_INSTALLER)
     context.set_default_os_installer_key(OS_FREEBSD, lambda self: PKG_INSTALLER)
 
 

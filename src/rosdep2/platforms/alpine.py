@@ -31,6 +31,7 @@ import os
 
 from rospkg.os_detect import OS_ALPINE
 
+from .conan import CONAN_INSTALLER
 from .pip import PIP_INSTALLER
 from .source import SOURCE_INSTALLER
 from ..installers import PackageManagerInstaller
@@ -47,6 +48,7 @@ def register_platforms(context):
     context.add_os_installer_key(OS_ALPINE, APK_INSTALLER)
     context.add_os_installer_key(OS_ALPINE, PIP_INSTALLER)
     context.add_os_installer_key(OS_ALPINE, SOURCE_INSTALLER)
+    context.add_os_installer_key(OS_ALPINE, CONAN_INSTALLER)
     context.set_default_os_installer_key(OS_ALPINE, lambda self: APK_INSTALLER)
     context.set_os_version_type(OS_ALPINE, lambda self: '.'.join(self.get_version().split('.')[:2]))
 
