@@ -34,6 +34,7 @@ import traceback
 
 from rospkg.os_detect import OS_OSX, OsDetect
 
+from .conan import CONAN_INSTALLER
 from ..core import InstallFailed, RosdepInternalError, InvalidData
 from .pip import PIP_INSTALLER
 from .source import SOURCE_INSTALLER
@@ -63,6 +64,7 @@ def register_platforms(context):
     context.add_os_installer_key(OS_OSX, MACPORTS_INSTALLER)
     context.add_os_installer_key(OS_OSX, PIP_INSTALLER)
     context.add_os_installer_key(OS_OSX, SOURCE_INSTALLER)
+    context.add_os_installer_key(OS_OSX, CONAN_INSTALLER)
     context.set_default_os_installer_key(OS_OSX, lambda self: BREW_INSTALLER)
     context.set_os_version_type(OS_OSX, OsDetect.get_codename)
 
