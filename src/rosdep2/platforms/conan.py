@@ -75,7 +75,9 @@ def conan_detect(pkgs):
     """
     Given a list of packages to install, return the list of packages already installed.
 
-    This reads the packages installed from the conan lockfile.
+    This checks that the profile used matches the profile of a new reinstall (if not
+    it indicates that all packages should be installed again) and reads the packages
+    installed from the Conan lockfile at 'install/rosdep_conan.lock'.
     """
     if not is_conan_installed():
         return []
