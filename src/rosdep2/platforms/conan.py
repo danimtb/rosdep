@@ -38,6 +38,7 @@ from ..installers import PackageManagerInstaller
 
 # conan package manager key
 CONAN_INSTALLER = 'conan'
+CONAN_PROFILES = 'conan_profiles.json'
 CONAN_LOCKFILE_NAME = 'rosdep_conan.lock'
 CONAN_PROFILE_NAME = 'conan_profile'
 
@@ -58,6 +59,18 @@ def get_lockfile_path():
     return os.path.join("install", CONAN_LOCKFILE_NAME)
 
 
+def get_profiles_path():
+    return os.path.join("install", CONAN_PROFILES)
+
+
+def get_profiles_data():
+    conan_cmd = ['conan' 'profile', 'show', '--format', 'json']
+    if os.path.exists(CONAN_PROFILE_NAME):
+        conan_cmd.extend(['--profile', CONAN_PROFILE_NAME])
+    output = subprocess.check_output(conan_cmd).strip().decode()
+    return json.loads(output)
+
+
 def conan_detect(pkgs):
     """
     Given a list of packages to install, return the list of packages already installed.
@@ -67,16 +80,27 @@ def conan_detect(pkgs):
     if not is_conan_installed():
         return []
 
-    ret_list = []
+    if not os.path.exists(get_profiles_path()):
+        return []
 
     if not os.path.exists(get_lockfile_path()):
-        return ret_list
+        return []
+
+    current_profile = get_profiles_data()
+
+    with open(get_profiles_path()) as f:
+        previous_profile = json.load(f)
+
+    # If the profile to use in the install command does not match the previously used one, reinstall packages
+    if current_profile != previous_profile:
+        return []
 
     with open(get_lockfile_path()) as f:
-        data = json.load(f)
+        lockfile = json.load(f)
 
-    installed_pkgs = [r.split("#")[0] for r in data["requires"]]
+    installed_pkgs = [r.split("#")[0] for r in lockfile["requires"]]
 
+    ret_list = []
     for pkg in pkgs:
         if pkg in installed_pkgs:
             ret_list.append(pkg)
@@ -111,6 +135,9 @@ class ConanInstaller(PackageManagerInstaller):
         packages = self.get_packages_to_install(resolved, reinstall=reinstall)
         if not packages:
             return []
+
+        with open(get_profiles_path()) as f:
+            f.write(get_profiles_data())
 
         self._install_ament_generator(quiet)
 
