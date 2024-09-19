@@ -109,7 +109,7 @@ def conan_detect(pkgs):
 
 class ConanInstaller(PackageManagerInstaller):
     """
-    :class:`Installer` support for conan.
+    :class:`Installer` support for Conan C/C++ Package Manager.
     """
 
     def __init__(self):
@@ -131,6 +131,19 @@ class ConanInstaller(PackageManagerInstaller):
         subprocess.check_output(conan_config_install)
 
     def get_install_command(self, resolved, interactive=True, reinstall=False, quiet=False):
+        """
+        Composes a Conan install command with the pacakges to install from package.xml and the index file.
+
+        The command should be equivalent to running manually the command:
+            $ conan install --require <package>/<version> --update --generator Ament --build missing --output-folder install
+
+        - The Ament generator can be found at https://github.com/conan-io/conan-extensions
+        - If a 'conan_profile' file is found at the root of the project, it will be injected into the install command as '--profile conan_profile'.
+          This is useful to be able to change the configuration of the packages to install, for example, requiring a package to be shared=True.
+        - A Conan lockfile is generated at 'install/rosdep_conan.lock' as a result of running the install command as well as the data of
+          the profile used at 'install/conan_profile.json'. These files are use to check if the packages are already installed for the desired
+          configuration.
+        """
         if not is_conan_installed():
             raise InstallFailed((CONAN_INSTALLER, 'conan is not installed'))
 
