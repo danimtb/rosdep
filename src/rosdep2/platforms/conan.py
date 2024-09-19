@@ -64,7 +64,7 @@ def get_profiles_path():
 
 
 def get_profiles_data():
-    conan_cmd = ['conan' 'profile', 'show', '--format', 'json']
+    conan_cmd = ['conan', 'profile', 'show', '--format', 'json']
     if os.path.exists(CONAN_PROFILE_NAME):
         conan_cmd.extend(['--profile', CONAN_PROFILE_NAME])
     output = subprocess.check_output(conan_cmd).strip().decode()
