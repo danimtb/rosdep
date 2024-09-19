@@ -125,7 +125,8 @@ class ConanInstaller(PackageManagerInstaller):
         conan_config_install = ['conan', 'config', 'install']
         if quiet:
             conan_config_install.append('-vquiet')
-        conan_config_install.append('https://github.com/conan-io/conan-extensions.git')
+        conan_config_install.extend(
+            ['https://github.com/conan-io/conan-extensions.git', '--source-folder', 'extensions/generators'])
         subprocess.check_output(conan_config_install)
 
     def get_install_command(self, resolved, interactive=True, reinstall=False, quiet=False):
