@@ -137,7 +137,7 @@ class ConanInstaller(PackageManagerInstaller):
         if not packages:
             return []
 
-        with open(get_profiles_path()) as f:
+        with open(get_profiles_path(), 'a') as f:
             f.write(get_profiles_data())
 
         self._install_ament_generator(quiet)
