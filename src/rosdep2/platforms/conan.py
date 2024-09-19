@@ -126,7 +126,8 @@ class ConanInstaller(PackageManagerInstaller):
         if quiet:
             conan_config_install.append('-vquiet')
         conan_config_install.extend(
-            ['https://github.com/conan-io/conan-extensions.git', '--source-folder', 'extensions/generators'])
+            ['https://github.com/conan-io/conan-extensions.git', '--source-folder', 'extensions/generators',
+             '--target-folder', 'extensions/generators'])
         subprocess.check_output(conan_config_install)
 
     def get_install_command(self, resolved, interactive=True, reinstall=False, quiet=False):
@@ -139,7 +140,7 @@ class ConanInstaller(PackageManagerInstaller):
 
         profiles_path = get_profiles_path()
         os.makedirs(os.path.dirname(profiles_path), exist_ok=True)
-        with open(profiles_path, 'a') as f:
+        with open(profiles_path, 'w') as f:
             f.write(json.dumps(get_profiles_data()))
 
         self._install_ament_generator(quiet)
